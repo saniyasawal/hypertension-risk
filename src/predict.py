@@ -54,7 +54,7 @@ def predict(data):
 
     predictions = model.predict(features)
 
-    return int(predictions[0])
+    return predictions
 
 
 if __name__ == "__main__":
