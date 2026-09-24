@@ -1,0 +1,54 @@
+name: Hypertension Risk ML Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ml-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Train model and apply quality gate
+      - name: Train model and run quality gate
+        run: |
+          python src/train.py
+
+      # 5. Run application tests
+      - name: Run application tests
+        run: |
+          pytest -v
+
+      # 6. Create final model package
+      - name: Create model package
+        run: |
+          mkdir -p artifact
+          cp model_package/model.joblib artifact/
+          cp model_package/metrics.json artifact/
+          cp src/predict.py artifact/
+          cp requirements.txt artifact/
+
+      # 7. Upload model package
+      - name: Upload model package
+        uses: actions/upload-artifact@v4
+        with:
+          name: hypertension-model-run-${{ github.run_number }}
+          path: artifact/
