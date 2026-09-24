@@ -122,8 +122,11 @@ def build_model():
             ),
             (
                 "classifier",
-                DummyClassifier(
-                    strategy="most_frequent"
+                RandomForestClassifier(
+                    n_estimators=100,
+                    random_state=RANDOM_STATE,
+                    class_weight="balanced",
+                    n_jobs=-1,
                 ),
             ),
         ]
