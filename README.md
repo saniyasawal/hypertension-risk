@@ -250,6 +250,8 @@ This causes GitHub Actions to mark the training step as failed.
 
 It is a practical threshold requiring meaningful improvement over the baseline. Without a margin, a candidate could pass with an extremely small, potentially meaningless improvement. The margin was fixed **before** the failure/recovery demonstrations and was not changed during them.
 
+If the improvement margin is too low, a model with only a very small improvement over the baseline may pass the quality gate, even though the improvement may not be practically meaningful. If the margin is too high, a genuinely useful model may fail the quality gate because the required improvement is too difficult to achieve. Therefore, the margin should be large enough to require meaningful improvement but not so large that it unnecessarily rejects useful models.
+
 ---
 
 ## 13. Observed Model Performance
@@ -547,6 +549,7 @@ Data ingestion → Data validation → Feature engineering → Model training
 → Experiment tracking → Model evaluation → Model registry → Approval gate
 → Deployment → Monitoring → Drift detection → Automated retraining
 ```
+MLOps maturity level: This implementation represents a basic/early MLOps level because it provides automated validation, reproducible training, quality gates, automated testing, continuous integration, and artifact delivery. However, it does not yet provide production deployment, model monitoring, drift detection, model registry, or automated retraining. These capabilities would be required to move toward the next level of MLOps maturity.
 
 Possible future improvements:
 
